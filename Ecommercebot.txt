@@ -1,0 +1,39 @@
+import openai
+
+openai.api_key = 'YOUR_API_KEY'
+
+class ShoppingAssistantChatbot:
+    def __init__(self):
+        self.chat_history = []
+
+    def get_chatbot_response(self, user_input):
+        # Append the user's message to the chat history
+        self.chat_history.append(f"User: {user_input}")
+
+        # Generate a response from the chat history using the ChatGPT API
+        response = openai.Completion.create(
+            model="text-davinci-003",  # Use the appropriate model
+            messages=self.chat_history
+        )
+
+        # Extract the chatbot's reply from the API response
+        chatbot_reply = response['choices'][0]['message']['content']
+
+        # Append the chatbot's reply to the chat history
+        self.chat_history.append(f"Chatbot: {chatbot_reply}")
+
+        return chatbot_reply
+
+# Instantiate the E-commerce Shopping Assistant Chatbot
+shopping_chatbot = ShoppingAssistantChatbot()
+
+# Example user interaction loop
+while True:
+    user_input = input("User: ")
+
+    if user_input.lower() == 'exit':
+        break
+
+    chatbot_response = shopping_chatbot.get_chatbot_response(user_input)
+    print(f"Chatbot: {chatbot_response}")
+s
